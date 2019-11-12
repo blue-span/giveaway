@@ -1,6 +1,5 @@
 from giveaway import client
 
-
 with client.factory("httpbin.org", 443) as make_request:
     for i in range(10):
         events = make_request([

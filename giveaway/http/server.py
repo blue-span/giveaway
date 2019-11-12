@@ -2,6 +2,7 @@ from functools import partial
 import socketserver
 import socket
 import ssl
+import sys
 
 import h11
 
@@ -19,12 +20,14 @@ def tls_context():
     tls_context = ssl.create_default_context()
     tls_context.verify_mode = ssl.CERT_OPTIONAL
     tls_context.check_hostname = False
-    tls_context.sni_callback = acme_sni_callback
+    #tls_context.sni_callback = acme_sni_callback
+    tls_context.load_cert_chain('../certificate.pem', '../key.pem')
     return tls_context
 
 
 class TCPServer(socketserver.TCPServer):
     allow_reuse_address = True
+    address_family = socket.AF_INET6
 
     def get_request(self):
         stream, address = self.socket.accept()
@@ -60,20 +63,29 @@ def http_stream_handler(stream, address, server, *, request_handler):
         stream.close()
 
     def handle_one_request():
-        events = []
+        def event_generator_factory():
+            while True:
+                event = connection.next_event()
+                if event is h11.NEED_DATA:
+                    read_from_peer()
+                elif type(event) is h11.ConnectionClosed:
+                    return
+                else:
+                    yield event
 
-        while True:
-            event = connection.next_event()
-            if event is h11.NEED_DATA:
-                read_from_peer()
-            elif type(event) is h11.EndOfMessage:
-                for handler_event in request_handler(events):
-                    send_event(handler_event)
-                return
-            elif type(event) is h11.ConnectionClosed:
-                return
-            else:
-                events.append(event)
+        event_generator = event_generator_factory()
+        sentinel = object()
+        event = sentinel
+        for event in request_handler(event_generator):
+            send_event(event)
+        if event is not sentinel and type(event) is not h11.EndOfMessage:
+            send_event(h11.EndOfMessage())
+
+        sentinel = object()
+        event = next(event_generator, sentinel)
+        if event is not sentinel and type(event) is not h11.EndOfMessage:
+            print(f"request_handler ignored event {event=}", file=sys.stderr)
+            return
 
     try:
         while True:
@@ -82,7 +94,10 @@ def http_stream_handler(stream, address, server, *, request_handler):
                 teardown_peer()
                 return
             else:
-                connection.start_next_cycle()
+                try:
+                    connection.start_next_cycle()
+                except:
+                    return
     except:
         teardown_peer()
         raise

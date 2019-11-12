@@ -1,0 +1,1 @@
+from giveaway.handlers.registration.presenter import request_handler
