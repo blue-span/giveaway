@@ -1,4 +1,6 @@
+from collections import namedtuple
 from functools import partial
+from pathlib import Path
 import socketserver
 import socket
 import ssl
@@ -42,13 +44,26 @@ class ThreadingTCPServer(socketserver.ThreadingMixIn, TCPServer):
 max_recv = 32 * 1024
 
 
+class FilePassthrough:
+    def __init__(self, path):
+        self.path = path
+        self.length = path.stat().st_size
+
+    def __len__(self):
+        return self.length
+
+
 def http_stream_handler(stream, address, server, *, request_handler):
     connection = h11.Connection(our_role=h11.SERVER)
 
     def send_event(event):
         assert type(event) is not h11.ConnectionClosed
-        data = connection.send(event)
-        stream.sendall(data)
+        for data in connection.send_with_data_passthrough(event):
+            if isinstance(data, FilePassthrough):
+                with data.path.open('rb') as fn:
+                    stream.sendfile(fn)
+            else:
+                stream.sendall(data)
 
     def read_from_peer():
         if connection.they_are_waiting_for_100_continue:

@@ -38,7 +38,7 @@ document = html_boilerplate(
         E.link(
             dict(
                 rel="stylesheet",
-                href="css/bluespan-normalize.css"
+                href="/static/css/bluespan-normalize.css"
             ),
         )
     ),
@@ -105,7 +105,7 @@ increase or decrease your chances of winning."""
                     ),
                     E.label(
                         {'for': 'prize:gaming-computer', 'class': 'checkbox-indicator amd-red'},
-                        E.img({'src': 'amd-ryzen-radeon.png', 'class': 'checkbox-invert'}),
+                        E.img({'src': '/static/images/amd-ryzen-radeon.png', 'class': 'checkbox-invert'}),
                         E.h2("Gaming Computer"),
                     ),
                 ),
@@ -116,7 +116,7 @@ increase or decrease your chances of winning."""
                     ),
                     E.label(
                         {'for': 'prize:warcraft-3-reforged', 'class': 'checkbox-indicator warcraft-yellow'},
-                        E.img({'src': 'warcraft-reforged.png'}),
+                        E.img({'src': '/static/images/warcraft-reforged.png'}),
                         E.h2("Warcraft\u00A03: Reforged"),
                     ),
                 ),

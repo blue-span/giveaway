@@ -1,14 +1,16 @@
-from giveaway import client
+import h11
 
-with client.factory("httpbin.org", 443) as make_request:
-    for i in range(10):
+from giveaway.http import client
+
+
+with client.factory("localhost", 8080) as make_request:
+    for i in ["/giveaway/warcraft-reforged.png", "/giveaway/warcraft-reforged.png"]:
         events = make_request([
             h11.Request(
                 method="GET",
-                target=f"/get?foo={i}",
+                target=i,
                 headers=[
-                    ("host", "httpbin.org"),
-                    ("content-type", "application/json"),
+                    ("host", "localhost"),
                 ],
             ),
             h11.EndOfMessage(),

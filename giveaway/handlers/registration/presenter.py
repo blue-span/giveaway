@@ -29,7 +29,9 @@ def request_handler(event_generator):
 
     yield h11.Response(
         status_code=200,
-        headers=[],
+        headers=[
+            (b"content-type", b"text/html"),
+        ],
     )
     yield h11.Data(
         data=view.render(),

@@ -1,41 +1,25 @@
 import h11
-import mimetypes
 from pathlib import Path
+import sys
 
 from giveaway.handlers import registration
+from giveaway.handlers import static
 
-
-def static_handler(event_generator):
-    request = next(event_generator, None)
-    if not isinstance(request, h11.Request):
-        return
-
-    path = Path(request.target[len(b'/giveaway/'):].decode('utf-8'))
-
-    yield h11.Response(
-        status_code=200,
-        headers=[
-            (b'content-type', b'text/css'),
-            (b'content-length', str(path.stat().st_size).encode('utf-8')),
-        ]
-    )
-
-    with path.open('rb') as f:
-        yield h11.Data(
-            data=f.read(),
-        )
-
-
+g
 routes = {
     (b'GET', b'/giveaway/register'): registration.request_handler,
-    (b'GET', b'/giveaway/css/bluespan-normalize.css'): static_handler,
 }
+
+routes.update(dict(static.routes()))
 
 
 def request_handler(event_generator):
     request = next(event_generator, None)
     if not isinstance(request, h11.Request):
         return
+
+    import threading
+    print(threading.current_thread(), "router", request.method, request.target, file=sys.stdout)
 
     def gen():
         yield request
