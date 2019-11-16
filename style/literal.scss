@@ -1,0 +1,22 @@
+.literal {
+    font-family: 'Consolas', 'Menlo', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    font-size: 0.9em;
+    padding: 0.1em 0.2em;
+    background-color: #ecf0f3;
+    color: #222;
+
+    &--red {
+        @extend .literal;
+        color: #804e49;
+    }
+
+    &--yellow {
+        @extend .literal;
+        color: #ba9555;
+    }
+
+    &--green {
+        @extend .literal;
+        color: #698f3f;
+    }
+}

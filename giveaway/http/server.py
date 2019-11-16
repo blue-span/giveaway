@@ -74,8 +74,12 @@ def http_stream_handler(stream, address, server, *, request_handler):
         connection.receive_data(data)
 
     def teardown_peer():
-        stream.shutdown(socket.SHUT_RDWR)
-        stream.close()
+        try:
+            stream.shutdown(socket.SHUT_RDWR)
+        except:
+            pass
+        finally:
+            stream.close()
 
     def handle_one_request():
         def event_generator_factory():

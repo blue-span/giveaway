@@ -1,0 +1,45 @@
+%reference {
+    text-decoration: none;
+}
+
+.footnote-reference {
+    @extend %reference;
+
+    font-size: 0.6em;
+    vertical-align: top;
+    border-bottom: 1px dotted #004b6b;
+
+    &::before {
+        content: "[";
+    }
+    &::after {
+        content: "]";
+    }
+}
+
+.footnote {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.footnote > dt {
+    float: left;
+}
+
+%backref {
+    margin-left: 0.1em;
+}
+
+.fn-backref {
+    @extend %reference;
+
+    &::before {
+        @extend %backref;
+        content: "[";
+    }
+
+    &::after {
+        @extend %backref;
+        content: "]";
+    }
+}

@@ -1,0 +1,107 @@
+@use "colors";
+
+input.indicated {
+    display: none;
+}
+
+prizelist {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-content: center;
+    flex-direction: row;
+}
+
+prize {
+    display: flex;
+    justify-content: space-around;
+    height: 9em;
+    padding: 1em;
+    flex: 1;
+    order: 2;
+
+    &.featured {
+        box-sizing: box;
+        flex-basis: 100%;
+        order: 1;
+    }
+}
+
+@mixin theme($color) {
+    border-color: $color;
+    color: $color;
+
+    box-shadow: 0 0 20px rgba($color, .50);
+        //0 4px 5px 0 rgba($color, .14),
+        //0 1px 10px 0 rgba($color, .12),
+        //0 2px 4px -1px rgba($color, .2);
+
+    &:hover {
+        box-shadow: none;
+        background-color: $color;
+        color: #fff;
+    }
+}
+
+prize label {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    border: 1px black solid;
+    padding: 0.5em;
+
+    &.steelseries-black {
+        @include theme(#333);
+    }
+    &.warcraft-yellow {
+        @include theme(#DCA00D);
+    }
+    &.amd-red {
+        @include theme(#b20026);//#dd0031);
+    }
+    &.amd-red > img {
+        filter: invert(10%) sepia(84%) saturate(6776%) hue-rotate(342deg) brightness(77%) contrast(103%);
+    }
+    &.amd-red:hover > img, &.steelseries-black:hover > img {
+        filter: invert(100%);
+    }
+}
+
+
+@mixin theme-active($color) {
+    color: #fff;
+    background-color: darken($color, 6%);
+    box-shadow: 0 0 30px 5px $color;
+}
+
+prize > [type="checkbox"]:checked ~ label {
+    &.steelseries-black {
+        @include theme-active(#333);
+    }
+    &.warcraft-yellow {
+        @include theme-active(#DCA00D);
+    }
+    &.amd-red {
+        @include theme-active(#b20026);//#dd0031);
+    }
+    &.amd-red > img {
+        filter: invert(100%);
+    }
+    &.steelseries-black > img {
+        filter: invert(100%);
+    }
+}
+
+prize label > img {
+    max-width: 10em;
+    max-height: 5em;
+}
+
+prizetitle {
+    font-size: 1.7em;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+}

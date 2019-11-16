@@ -1,0 +1,60 @@
+input, label {
+    display: block;
+    width: calc(100% - 0.75em);
+}
+
+input {
+    line-height: 2;
+    font-size: 0.9em;
+}
+
+label {
+    margin-top: 0.8em;
+}
+
+label:first-of-type {
+    margin-top: 0;
+}
+
+form {
+    margin-bottom: 2em;
+}
+
+fieldset {
+    margin-top: 1.2em;
+}
+
+legend {
+    font-weight: 300;
+}
+
+$submit-color: #28a745;
+
+button.submit {
+    font-size: 1.5em;
+    display: block;
+    margin: auto;
+    width: 80%;
+    border: 1px solid transparent;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: $submit-color;
+    background-color: transparent;
+    border-color: $submit-color;
+    margin-top: 1.4em;
+    line-height: 2;
+    padding-top: 0.2em;
+    box-shadow: 0 8px 10px 0 rgba($submit-color, .14),
+                0 2px 20px 0 rgba($submit-color, .12),
+                0 4px 8px -2px rgba($submit-color, .2);
+}
+
+button.submit:hover {
+    color: #fff;
+    background-color: $submit-color;
+}
+
+button.submit:active {
+    background-color: darken($submit-color, 10%);
+    box-shadow: none;
+}

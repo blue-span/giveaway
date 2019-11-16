@@ -4,6 +4,7 @@ import sys
 
 from giveaway.http import server
 from giveaway import router
+from giveaway import database
 
 
 def main():
