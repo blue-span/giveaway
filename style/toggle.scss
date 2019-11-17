@@ -105,3 +105,13 @@ prizetitle {
     white-space: nowrap;
     overflow: hidden;
 }
+
+@media only screen and (max-width: 700px) {
+    prize label > img {
+        max-height: 5em;
+    }
+
+    prizetitle {
+        font-size: 1em;
+    }
+}
