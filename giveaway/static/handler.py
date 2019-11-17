@@ -1,4 +1,5 @@
 import h11
+from functools import partial, update_wrapper
 from itertools import chain, starmap, repeat
 from os import path, walk
 from pathlib import Path
@@ -21,18 +22,24 @@ def walk_files(topdir):
     return chain.from_iterable(starmap(files, walk(topdir)))
 
 
-def routes(topdir="static"):
+def make_routes(topdir, base_url_path):
     def as_route(dirpath, filepath):
-        return ((b"GET", path.join("/", dirpath, filepath).encode("utf-8")), request_handler)
-    return starmap(as_route, walk_files(topdir))
+        path = (Path(dirpath) / filepath).absolute()
+        if ".py" in path.suffix:
+            return
+        else:
+            url_path = Path(base_url_path) / path.relative_to(topdir)
+            handler = lambda eg: get(eg, path=path)
+            return ((b"GET", str(url_path).encode("utf-8")), update_wrapper(handler, get))
+    return filter(lambda r: r is not None, starmap(as_route, walk_files(topdir)))
 
 
-def request_handler(event_generator):
+def get(event_generator, path):
     request = next(event_generator, None)
     if not isinstance(request, h11.Request):
         return
 
-    path = Path(request.target[len(b"/"):].decode("utf-8"))
+    #path = Path(request.target[len(b"/"):].decode("utf-8"))
     data = FilePassthrough(path)
 
     yield h11.Response(

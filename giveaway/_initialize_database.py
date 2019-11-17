@@ -1,22 +1,19 @@
 import datetime
+import sys
 from uuid import UUID
 
 import apsw
 import pytz
 
 from giveaway import model
+from giveaway import database
+
 
 PT = pytz.timezone("America/Los_Angeles")
-database = apsw.Connection("giveaway.sqlite3")
-cursor = database.cursor()
+timestamp = lambda *a, **kw: int(PT.localize(datetime.datetime(*a, **kw)).timestamp())
 
-# schema
-
-cursor.execute(model._create_all_tables)
 
 # giveaway
-
-timestamp = lambda *a, **kw: int(PT.localize(datetime.datetime(*a, **kw)).timestamp())
 
 giveaways = [
     {
@@ -32,7 +29,6 @@ giveaways = [
         "end_ts": timestamp(2019, 12, 8, hour=11, minute=59, second=59),
     }
 ]
-cursor.executemany(model.create_giveaway, giveaways)
 
 # prize
 
@@ -62,7 +58,6 @@ prizes = [
         "theme": "no theme",
     },
 ]
-cursor.executemany(model.create_prize, prizes)
 
 # giveaway_prize
 
@@ -89,4 +84,16 @@ giveaway_prizes = [
         "featured": 0,
     },
 ]
-cursor.executemany(model.create_giveaway_prize, giveaway_prizes)
+
+
+def main():
+    cursor = database.connection.cursor()
+
+    # schema
+    cursor.execute(model._create_all_tables)
+
+    cursor.executemany(model.create_prize, prizes)
+    cursor.executemany(model.create_giveaway_prize, giveaway_prizes)
+    cursor.executemany(model.create_giveaway, giveaways)
+
+    print(f"changes={database.connection.totalchanges()}", file=sys.stderr)

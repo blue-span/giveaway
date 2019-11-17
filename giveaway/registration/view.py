@@ -193,7 +193,7 @@ document = lambda subtitle, *content: html_boilerplate(
         E.link(
             dict(
                 rel="stylesheet",
-                href="/static/css/bluespan-normalize.css"
+                href="/static/css/bluespan.css"
             ),
         )
     ),

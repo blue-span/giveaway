@@ -5,15 +5,20 @@ import socketserver
 import socket
 import ssl
 import sys
+import os
 
 import h11
+
+
+tls_cert = os.environ.get("BLUESPAN_TLS_CERT", "../cert.pem")
+tls_key = os.environ.get("BLUESPAN_TLS_KEY", "../key.pem")
 
 
 def acme_sni_callback(socket, server_name, original_context):
     print(socket, server_name, original_context)
     print(socket.context)
     new_context = tls_context()
-    new_context.load_cert_chain('../certificate.pem', '../key.pem')
+    new_context.load_cert_chain(tls_cert, tls_key)
     socket.context = new_context
     print("cert loaded")
 
@@ -23,7 +28,7 @@ def tls_context():
     tls_context.verify_mode = ssl.CERT_OPTIONAL
     tls_context.check_hostname = False
     #tls_context.sni_callback = acme_sni_callback
-    tls_context.load_cert_chain('../certificate.pem', '../key.pem')
+    tls_context.load_cert_chain(tls_cert, tls_key)
     return tls_context
 
 
@@ -31,6 +36,8 @@ class TCPServer(socketserver.TCPServer):
     allow_reuse_address = True
     address_family = socket.AF_INET6
 
+
+class TLSServer(TCPServer):
     def get_request(self):
         stream, address = self.socket.accept()
         tls_stream = tls_context().wrap_socket(stream, server_side=True)
@@ -38,6 +45,9 @@ class TCPServer(socketserver.TCPServer):
 
 
 class ThreadingTCPServer(socketserver.ThreadingMixIn, TCPServer):
+    pass
+
+class ThreadingTLSServer(socketserver.ThreadingMixIn, TLSServer):
     pass
 
 
