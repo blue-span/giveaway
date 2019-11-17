@@ -10,7 +10,11 @@ input {
     padding-right: 2px;
 }
 
-input:invalid {
+input:placeholder-shown:invalid {
+    box-shadow: none
+}
+
+input:not(:placeholder-shown):invalid {
     box-shadow: 0 0 5px orangered;
 }
 
