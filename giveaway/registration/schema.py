@@ -12,7 +12,7 @@ def starfilter(pred, it):
             yield i
 
 
-_youtube = re.compile("^https:\/\/www.youtube.com\/(channel|user)\/[a-zA-Z0-9~._-]+\/?$")
+_youtube = re.compile("^(?:https:\/\/www.youtube.com\/channel\/|)(UC[a-zA-Z0-9~._-]{22})\/?$")
 _discord = re.compile("^.+#[0-9]{4}$")
 
 

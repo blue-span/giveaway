@@ -165,16 +165,22 @@ def identification_fieldset():
         *inject_error("youtube:url"),
         *text_field(
             "youtube:url", (
-                "Youtube Channel URL ",
+                "Youtube Channel ID or URL ",
                 E.small(E.code("(required)")),
             ),
-            placeholder="https://www.youtube.com/channel/UCpOkbe8JBvSHIEQn5D0V3tQ",
+            placeholder="UCpOkbe8JBvSHIEQn5D0V3tQ",
+            pattern="^(?:https:\/\/www.youtube.com\/channel\/|)(UC[a-zA-Z0-9~._-]{22})\/?$",
+            required="required",
             **inject_last_value("youtube:url"),
         ),
         note(
-            """The channel or user URL you enter here should be the same channel/user you
-            regularly use in live stream chat during Blue Span's streams. This
-            will be used to determine """,
+            """The """,
+            E.a({"class": "reference", "href": "https://www.youtube.com/account_advanced", "target": "_blank"}, "channel ID"),
+            """ or URL you enter here should be for the same channel
+            you regularly use in live stream chat during Blue Span's
+            streams. This will be used to determine
+
+            """,
             external_link("basic eligibility", "https://bluespan.gg/giveaway/#who-is-eligible"),
             " for the giveaway.",
         ),
@@ -185,6 +191,8 @@ def identification_fieldset():
                 E.small(E.code("(required)")),
             ),
             placeholder="Lulu-chan#4513",
+            pattern="^.+#[0-9]{4}$",
+            required="required",
             **inject_last_value("discord:username"),
         ),
         note(

@@ -6,6 +6,16 @@ input, label {
 input {
     line-height: 2;
     font-size: 0.9em;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+input:invalid {
+    box-shadow: 0 0 5px orangered;
+}
+
+input:valid {
+    box-shadow: 0 0 5px green;
 }
 
 label {
