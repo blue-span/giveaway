@@ -22,15 +22,20 @@ def walk_files(topdir):
     return chain.from_iterable(starmap(files, walk(topdir)))
 
 
-def make_routes(topdir, base_url_path):
+def make_routes(topdir, base_url_path, strip_stem=None):
     def as_route(dirpath, filepath):
         path = (Path(dirpath) / filepath).absolute()
         if ".py" in path.suffix:
             return
         else:
             url_path = Path(base_url_path) / path.relative_to(topdir)
+            target = (
+                url_path.parent
+                if strip_stem is not None and strip_stem == url_path.stem
+                else url_path
+            )
             handler = lambda eg: get(eg, path=path)
-            return ((b"GET", str(url_path).encode("utf-8")), update_wrapper(handler, get))
+            return ((b"GET", str(target).encode("utf-8")), update_wrapper(handler, get))
     return filter(lambda r: r is not None, starmap(as_route, walk_files(topdir)))
 
 
@@ -39,7 +44,6 @@ def get(event_generator, path):
     if not isinstance(request, h11.Request):
         return
 
-    #path = Path(request.target[len(b"/"):].decode("utf-8"))
     data = FilePassthrough(path)
 
     yield h11.Response(

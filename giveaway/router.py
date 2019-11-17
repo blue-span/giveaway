@@ -37,15 +37,15 @@ routes = {
     (b'POST', b'/giveaway/register'): registration.handler.post,
 
     (b'GET', b'/giveaway/register/'): redirect('/giveaway/register'),
-    (b'GET', b'/giveaway'): redirect('/giveaway/'),
-    (b'GET', b'/'): redirect('/giveaway/', 302),
+    (b'GET', b'/giveaway/'): redirect('/giveaway'),
+    (b'GET', b'/'): redirect('/giveaway', 302),
 }
 
 
 static_dir = Path(static.__file__).parent
 route_generators = [
     static.handler.make_routes(static_dir, "/static"),
-    static.handler.make_routes(os.environ["BLUESPAN_GG_PATH"], "/"),
+    static.handler.make_routes(os.environ["BLUESPAN_GG_PATH"], "/", strip_stem='index'),
 ]
 
 
@@ -86,7 +86,8 @@ def request_handler(event_generator):
                 ('content-type', 'text/plain'),
             ],
         )
-        yield h11.Data(data=b'404 Not Found\n')
+
+        yield h11.Data(data=b'404 Not Found\n\nsubscribe to Lulu-chan\n')
     else:
         yield from handler(gen())
 
