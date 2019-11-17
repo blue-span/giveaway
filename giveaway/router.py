@@ -37,6 +37,8 @@ routes = {
     (b'POST', b'/giveaway/register'): registration.handler.post,
 
     (b'GET', b'/giveaway/register/'): redirect('/giveaway/register'),
+    (b'GET', b'/register/'): redirect('/giveaway/register'),
+    (b'GET', b'/register'): redirect('/giveaway/register'),
     (b'GET', b'/giveaway/'): redirect('/giveaway'),
     (b'GET', b'/'): redirect('/giveaway', 302),
 }
