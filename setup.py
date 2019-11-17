@@ -1,10 +1,10 @@
 from setuptools import setup
-from setuptools.command.install import install
+from setuptools.command.build_py import build_py
 import pathlib
 import sys
 
 
-class compile_sass_preinstall(install):
+class compile_sass_prebuild(build_py):
     def run(self):
         import sass
         setup_dir = pathlib.Path(sys.modules[__name__].__file__).parent
@@ -22,6 +22,6 @@ setup(
     setup_requires=['setuptools_scm', 'libsass'],
     use_scm_version=True,
     cmdclass={
-        'install': compile_sass_preinstall,
+        'build_py': compile_sass_prebuild,
     },
 )

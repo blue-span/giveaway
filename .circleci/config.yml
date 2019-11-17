@@ -35,3 +35,4 @@ jobs:
 
             scp "$wheel" deploy@ed5rpzdi.lax.bluespan.gg:/home/deploy/wheels/
             ssh deploy@ed5rpzdi.lax.bluespan.gg python3.8 -m pip install --user --upgrade "/home/deploy/wheels/$(basename $wheel)"
+            ssh deploy@ed5rpzdi.lax.bluespan.gg doas /sbin/rc-service giveaway restart
