@@ -10,3 +10,14 @@ body {
     font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #222;
 }
+
+footer {
+    display: flex;
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 1em;
+}
+
+footer > *:first-child {
+    flex: 1;
+}

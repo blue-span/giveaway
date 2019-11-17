@@ -1,10 +1,12 @@
 import contextvars
 from uuid import UUID
+from importlib.metadata import version
 
 from lxml.builder import E
 from lxml import html
 
 
+_version = version("giveaway")
 prizes = contextvars.ContextVar("prizes")
 fields = contextvars.ContextVar("fields")
 title = contextvars.ContextVar("title")
@@ -24,6 +26,10 @@ def html_boilerplate(head, body):
             E.body(
                 *body,
             ),
+            E.footer(
+                E.code(f"version {_version}"),
+                E.a({"class": "reference", "href": "https://github.com/blue-span/giveaway"}, "source code"),
+            )
         )
     )
     return document

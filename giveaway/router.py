@@ -72,7 +72,7 @@ def request_handler(event_generator):
     handler = routes.get((request.method, request.target), None)
 
     print(
-        threading.get_ident(),
+        threading.get_native_id(),
         "router",
         request.method, request.target,
         handler_name(handler),

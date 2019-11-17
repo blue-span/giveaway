@@ -9,8 +9,8 @@ from giveaway import router
 from giveaway import database
 
 
-http_port = os.environ.get("BLUESPAN_HTTP_PORT", 8081)
-https_port = os.environ.get("BLUESPAN_HTTPS_PORT", 8080)
+http_port = int(os.environ.get("BLUESPAN_HTTP_PORT", 8081))
+https_port = int(os.environ.get("BLUESPAN_HTTPS_PORT", 8080))
 
 
 def http_main():
