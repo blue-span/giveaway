@@ -7,7 +7,27 @@ from giveaway.registration import presenter
 from giveaway.registration import schema
 
 
+def registrations_disabled():
+    yield h11.Response(
+        status_code=403,
+        headers=[
+            ("content-type", "text/plain"),
+        ]
+    )
+    yield h11.Data(
+        data=b"\n".join([
+            b"registrations for the Nov 24 giveaway are currently closed"
+            b"\n"
+            b"the Dec 8 giveaway registration will open on (or after) Dec 1"
+            b"\n"
+        ])
+    )
+
+
 def get(event_generator):
+    yield from registrations_disabled()
+    return
+
     request = next(event_generator, None)
     if not isinstance(request, h11.Request):
         return
@@ -16,6 +36,9 @@ def get(event_generator):
 
 
 def post(event_generator):
+    yield from registrations_disabled()
+    return
+
     request = next(event_generator, None)
     if not isinstance(request, h11.Request):
         return

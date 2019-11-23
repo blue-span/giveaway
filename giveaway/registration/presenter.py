@@ -14,7 +14,7 @@ from giveaway.registration import view
 def insert_registration(fields):
     cursor = database.connection.cursor()
 
-    giveaway_id, = fields["giveaway:id"]
+    giveaway_id, = UUID(fields["giveaway:id"]).bytes
     youtube_url, = fields["youtube:url"]
     discord_username, = fields["discord:username"]
     giveaway_prize_ids = set(

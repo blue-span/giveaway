@@ -8,6 +8,7 @@ import threading
 import os
 
 from giveaway import registration
+from giveaway import winner
 from giveaway import static
 
 
@@ -35,6 +36,7 @@ routes = {
     (b'GET', b'/giveaway/register'): registration.handler.get,
     (b'GET', b'/giveaway/register'): registration.handler.get,
     (b'POST', b'/giveaway/register'): registration.handler.post,
+    (b'GET', b'/giveaway/winner'): winner.handler.get,
 
     (b'GET', b'/giveaway/register/'): redirect('/giveaway/register'),
     (b'GET', b'/register/'): redirect('/giveaway/register'),
