@@ -11,6 +11,7 @@ content_types = {
     ".png": b"image/png",
     ".css": b"text/css",
     ".html": b"text/html",
+    ".mjs": b"application/javascript",
 }
 
 default_content_type = b"application/octet-stream"
