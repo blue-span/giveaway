@@ -9,13 +9,16 @@ import apsw
 from giveaway import database
 from giveaway import model
 from giveaway.registration import view
+from giveaway.registration import schema
 
 
 def insert_registration(fields):
     cursor = database.connection.cursor()
 
-    giveaway_id, = UUID(fields["giveaway:id"]).bytes
+    giveaway_id, = fields["giveaway:id"]
+    giveaway_id = UUID(giveaway_id).bytes
     youtube_url, = fields["youtube:url"]
+    youtube_url, = schema._youtube.match(youtube_url).groups()
     discord_username, = fields["discord:username"]
     giveaway_prize_ids = set(
         UUID(giveaway_prize_id).bytes

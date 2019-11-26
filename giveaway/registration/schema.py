@@ -13,7 +13,7 @@ def starfilter(pred, it):
 
 
 _youtube = re.compile("^(?:https:\/\/www.youtube.com\/channel\/|)(UC[a-zA-Z0-9~._-]{22})\/?$")
-_discord = re.compile("^.+#[0-9]{4}$")
+_discord = re.compile("^(?!\s)[^@#:]{2,32}(?<!\s)#[0-9]{4}$")
 
 
 def looks_like_youtube_url(values):
