@@ -4,6 +4,8 @@ import os
 import h11
 
 from giveaway.winner import presenter
+from giveaway import database
+from giveaway import model
 
 
 _token = os.environ["BLUESPAN_TOKEN"]
@@ -22,15 +24,25 @@ def get(event_generator):
         )
         return
 
-    obj = presenter.registrations("949553dd-ab29-4ef5-a325-3f10bee3c7ca")
+    cursor = database.connection.cursor()
+    giveaway_view = next(cursor.execute(model.get_current_giveaway), None)
+    if giveaway_view is None:
+        yield h11.Response(
+            status_code=404,
+            headers=[],
+        )
 
-    yield h11.Response(
-        status_code=200,
-        headers=[
-            ("content-type", "application/json"),
-        ]
-    )
+    else:
+        giveaway_id, _ = giveaway_view
+        obj = presenter.registrations(giveaway_id)
 
-    yield h11.Data(
-        data=json.dumps(obj).encode("utf-8")
-    )
+        yield h11.Response(
+            status_code=200,
+            headers=[
+                ("content-type", "application/json"),
+            ]
+        )
+
+        yield h11.Data(
+            data=json.dumps(obj).encode("utf-8")
+        )
