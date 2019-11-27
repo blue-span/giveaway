@@ -1,1 +1,1 @@
-INSERT INTO registration VALUES(:id, :giveaway_id, :youtube_url, :discord_username, :verified);
+INSERT INTO registration VALUES(:id, :giveaway_id, :youtube_channel_id, :discord_username, :verified);

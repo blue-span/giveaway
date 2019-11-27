@@ -16,7 +16,7 @@ _youtube = re.compile("^(?:https:\/\/www.youtube.com\/channel\/|)(UC[a-zA-Z0-9~.
 _discord = re.compile("^(?!\s)[^@#:]{2,32}(?<!\s)#[0-9]{4}$")
 
 
-def looks_like_youtube_url(values):
+def looks_like_youtube_channel_id(values):
     """This does not look like a youtube channel or user URL. Please compare the value you are entering with the appearance of the example value.
     """
     return all(_youtube.match(value) for value in values)
@@ -82,10 +82,10 @@ def validate(qsl):
                 cursor=cursor,
             ),
         ),
-        'youtube:url': validator_factory(
+        'youtube:channel-id': validator_factory(
             required=True,
             multiple=False,
-            value=looks_like_youtube_url,
+            value=looks_like_youtube_channel_id,
         ),
         'discord:username': validator_factory(
             required=True,

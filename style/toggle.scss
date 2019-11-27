@@ -61,11 +61,20 @@ prize label {
     &.amd-red {
         @include theme(#b20026);//#dd0031);
     }
+    &.breville-purple {
+        @include theme(#3a243b);//#dd0031);
+    }
     &.amd-red > img {
         filter: invert(10%) sepia(84%) saturate(6776%) hue-rotate(342deg) brightness(77%) contrast(103%);
     }
-    &.amd-red:hover > img, &.steelseries-black:hover > img {
-        filter: invert(100%);
+
+    @media only screen and (min-width: 700px) {
+        &.amd-red:hover > img, &.steelseries-black:hover > img {
+            filter: invert(100%);
+        }
+        &.breville-purple:hover > img {
+            filter: invert(100%) saturate(0%);
+        }
     }
 }
 
@@ -86,11 +95,15 @@ prize > [type="checkbox"]:checked ~ label {
     &.amd-red {
         @include theme-active(#b20026);//#dd0031);
     }
-    &.amd-red > img {
+    &.breville-purple {
+        @include theme-active(#3a243b);//#dd0031);
+    }
+    &.amd-red > img, &.steelseries-black > img {
         filter: invert(100%);
     }
-    &.steelseries-black > img {
-        filter: invert(100%);
+
+    &.breville-purple > img {
+        filter: invert(100%) saturate(0%);
     }
 }
 

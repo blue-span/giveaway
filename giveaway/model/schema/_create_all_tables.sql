@@ -29,10 +29,16 @@ CREATE TABLE IF NOT EXISTS giveaway_prize(
 CREATE TABLE IF NOT EXISTS registration(
   id BLOB PRIMARY KEY,
   giveaway_id BLOB NOT NULL,
-  youtube_url TEXT NOT NULL,
+  youtube_channel_id TEXT NOT NULL,
   discord_username TEXT NOT NULL,
   verified INTEGER NOT NULL,
   FOREIGN KEY(giveaway_id) REFERENCES giveaway(id)
+  FOREIGN KEY(youtube_channel_id) REFERENCES youtube_channel(id)
+) WITHOUT ROWID;
+
+CREATE TABLE IF NOT EXISTS youtube_channel(
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL
 ) WITHOUT ROWID;
 
 --DROP TABLE IF EXISTS ;
@@ -44,8 +50,7 @@ CREATE TABLE IF NOT EXISTS registration_prize(
   FOREIGN KEY(giveaway_prize_id) REFERENCES giveaway_prize(id)
 ) WITHOUT ROWID;
 
-
-CREATE VIEW prize_view
+CREATE VIEW IF NOT EXISTS prize_view
 AS
 SELECT
   prize.title AS title,
@@ -60,7 +65,7 @@ FROM
   INNER JOIN prize ON giveaway_prize.prize_id = prize.id;
 
 
-CREATE VIEW current_giveaway_view
+CREATE VIEW IF NOT EXISTS current_giveaway_view
 AS
 SELECT
   id,

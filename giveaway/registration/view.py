@@ -5,6 +5,8 @@ from importlib.metadata import version
 from lxml.builder import E
 from lxml import html
 
+from giveaway.registration import schema
+
 
 _version = version("giveaway")
 prizes = contextvars.ContextVar("prizes")
@@ -162,16 +164,16 @@ def external_link(text, href):
 def identification_fieldset():
     return E.fieldset(
         E.legend("How can we identify you?"),
-        *inject_error("youtube:url"),
+        *inject_error("youtube:channel-id"),
         *text_field(
-            "youtube:url", (
+            "youtube:channel-id", (
                 "Youtube Channel ID or URL ",
                 E.small(E.code("(required)")),
             ),
             placeholder="UCpOkbe8JBvSHIEQn5D0V3tQ",
-            pattern="^(?:https:\/\/www.youtube.com\/channel\/|)(UC[a-zA-Z0-9~._-]{22})\/?$",
+            pattern=schema._youtube.pattern,
             required="required",
-            **inject_last_value("youtube:url"),
+            **inject_last_value("youtube:channel-id"),
         ),
         note(
             """The """,
@@ -191,7 +193,7 @@ def identification_fieldset():
                 E.small(E.code("(required)")),
             ),
             placeholder="Lulu-chan#4513",
-            pattern="^.+#[0-9]{4}$",
+            pattern=schema._discord.pattern,
             required="required",
             **inject_last_value("discord:username"),
         ),

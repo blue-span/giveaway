@@ -7,9 +7,6 @@ from giveaway import database
 from giveaway import model
 
 
-_youtube = re.compile("^(?:https:\/\/www.youtube.com\/channel\/|)(UC[a-zA-Z0-9~._-]{22})\/?$")
-
-
 def registrations(giveaway_id):
     cursor = database.connection.cursor()
 
@@ -18,8 +15,7 @@ def registrations(giveaway_id):
     ))
 
     def as_object(registration_prize):
-        registration_id, youtube_url, discord_username, giveaway_prize_id, prize_title, verified = registration_prize
-        youtube_channel_id, = _youtube.match(youtube_url).groups()
+        registration_id, youtube_channel_id, discord_username, giveaway_prize_id, prize_title, verified = registration_prize
 
         return {
             "registration_id": str(UUID(bytes=registration_id)),

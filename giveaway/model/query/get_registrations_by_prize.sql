@@ -1,6 +1,6 @@
 SELECT
   registration.id AS registration_id,
-  registration.youtube_url AS youtube_url,
+  registration.youtube_channel_id AS youtube_channel_id,
   registration.discord_username AS discord_username,
   giveaway_prize.id AS giveaway_prize_id,
   prize.title AS prize_title,
