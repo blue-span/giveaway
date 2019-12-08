@@ -26,15 +26,16 @@ def get(event_generator):
 
     cursor = database.connection.cursor()
     giveaway_view = next(cursor.execute(model.get_current_giveaway), None)
-    if giveaway_view is None:
+    if False and giveaway_view is None:
         yield h11.Response(
             status_code=404,
             headers=[],
         )
 
     else:
-        giveaway_id, _ = giveaway_view
-        obj = presenter.registrations(giveaway_id)
+        #giveaway_id, _ = giveaway_view
+        from uuid import UUID
+        obj = presenter.registrations(UUID("15718946-d2d9-47b5-bbf4-7878266349d3").bytes)
 
         yield h11.Response(
             status_code=200,
